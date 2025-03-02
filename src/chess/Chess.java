@@ -53,6 +53,9 @@ public class Chess {
         }
 
         Piece movingPiece = boardInternal[srcRow][srcCol];
+        System.out.println("Moving piece at " + src + " (" + srcRow + ", " + srcCol + "): " +
+                (movingPiece != null ? movingPiece.getClass().getSimpleName() : "null"));
+
         if (movingPiece == null) {
             return illegalMove();
         }

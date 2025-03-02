@@ -23,39 +23,50 @@ public class Bishop extends Piece {
      * @param board The current board represented as a 2D array of Piece objects.
      * @return True if the bishop's move is valid; false otherwise.
      */
+
     @Override
     public boolean isMoveValid(int toRow, int toCol, Piece[][] board) {
+        // ✅ Ensure destination is within board bounds
+        if (toRow < 0 || toRow >= 8 || toCol < 0 || toCol >= 8) {
+            //System.out.println("Bishop.isMoveValid() Error: Destination out of bounds (" + toRow + ", " + toCol + ")");
+            return false;
+        }
+
         int rowDiff = toRow - row;
         int colDiff = toCol - col;
 
-        // Must move diagonally
+        // ✅ Must move diagonally
         if (Math.abs(rowDiff) != Math.abs(colDiff)) {
             return false;
         }
 
-        // Determine the direction of movement
+        // Determine movement direction
         int rowStep = (rowDiff > 0) ? 1 : -1;
         int colStep = (colDiff > 0) ? 1 : -1;
 
-        // Check if the path between source and destination is clear
+        // ✅ Check if the path between source and destination is clear
         int currentRow = row + rowStep;
         int currentCol = col + colStep;
         while (currentRow != toRow && currentCol != toCol) {
+            // ✅ Ensure currentRow and currentCol are within bounds before accessing the board
+            if (currentRow < 0 || currentRow >= 8 || currentCol < 0 || currentCol >= 8) {
+                //System.out.println("Bishop.isMoveValid() Error: Moving out of bounds (" + currentRow + ", " + currentCol + ")");
+                return false;
+            }
+
             if (board[currentRow][currentCol] != null) {
+                //System.out.println("Bishop.isMoveValid(): Path blocked at (" + currentRow + ", " + currentCol + ")");
                 return false; // Path is blocked
             }
             currentRow += rowStep;
             currentCol += colStep;
         }
 
-        // Check the destination square:
-        // It must be either empty or contain an opponent's piece.
+        // ✅ Ensure destination square is valid (empty or opponent piece)
         Piece destinationPiece = board[toRow][toCol];
-        if (destinationPiece == null) {
-            return true;
-        }
-        return destinationPiece.isWhite() != this.isWhite;
+        return (destinationPiece == null || destinationPiece.isWhite() != this.isWhite);
     }
+
 
     /**
      * Returns a string representing this bishop's code.

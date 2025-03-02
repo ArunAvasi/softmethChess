@@ -41,6 +41,7 @@ public class Queen extends Piece {
                 currentRow += rowStep;
                 currentCol += colStep;
             }
+            return board[toRow][toCol] == null || board[toRow][toCol].isWhite() != this.isWhite;
         }
         // Check for horizontal move
         else if (this.row == toRow && this.col != toCol) {
